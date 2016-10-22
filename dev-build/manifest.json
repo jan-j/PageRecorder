@@ -8,7 +8,7 @@
         "<all_urls>"
       ],
       "js": [
-        "bundle.js"
+        "webpack-dev-server-init.js"
       ]
     }
   ],
