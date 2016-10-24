@@ -1,7 +1,11 @@
 module.exports = {
-    entry: './src/app.ts',
+    entry: {
+        popup: './src/popup.ts',
+        background: './src/background.ts'
+    },
     output: {
-        filename: './build/bundle.js'
+        filename: './build/[name].js',
+        publicPath: 'https://localhost:3001/'
     },
     resolve: {
         // Add `.ts` and `.tsx` as a resolvable extension.
@@ -16,6 +20,6 @@ module.exports = {
     devServer: {
         host: 'localhost',
         port: 3001,
-        https: true
+        https: true,
     }
 };

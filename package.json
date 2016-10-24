@@ -11,5 +11,9 @@
     "typescript": "^2.0.3",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.16.2"
+  },
+  "devDependencies": {
+    "@types/chrome": "0.0.35",
+    "@types/node": "^6.0.45"
   }
 }

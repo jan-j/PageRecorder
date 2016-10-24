@@ -14,7 +14,7 @@ function reqListener() {
 
 var request = new XMLHttpRequest();
 request.onload = reqListener;
-request.open("get", "https://localhost:3001/bundle.js", true);
+request.open("get", "https://localhost:3001/build/bundle.js", true);
 request.send();
 
 console.info('dev-build/webpack-dev-server-init.js loaded');
