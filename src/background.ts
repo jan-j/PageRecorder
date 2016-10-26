@@ -1,15 +1,4 @@
-class Greeter {
-    constructor(private greeting: string, private color: string = "red") {}
-
-    greet() {
-        console.log(`%c ${this.greeting}`, `color: ${this.color}`);
-    }
-}
-
-let greeter = new Greeter("Background", "#ee0000");
-
-greeter.greet();
-
+declare var MediaRecorder: any;
 
 const captureOptions = {
     video: true,
@@ -24,16 +13,41 @@ const captureOptions = {
     }
 };
 
-chrome.runtime.onMessage.addListener( function (message, sender, sendResponse) {
-    console.log("Starting stream");
-    if (message.action === "captureStart") {
-        chrome.tabCapture.capture(captureOptions, function (stream: MediaStream) {
-            console.log("Stream started", stream);
+let stream: MediaStream = null;
+let recorder = null;
 
-            setTimeout(() => {
-                console.log("Stopping stream");
-                stream.getVideoTracks()[0].stop();
-            }, 2500);
-        });
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+    switch (message.action) {
+        case "log":
+            console.log.apply(console, message.args);
+
+            break;
+        case "captureStart":
+            console.log("Starting stream");
+            chrome.tabCapture.capture(captureOptions, function (s: MediaStream) {
+                stream = s;
+                recorder = new MediaRecorder(stream);
+                recorder.ondataavailable = function (e) {
+                    sendResponse(URL.createObjectURL(e.data));
+                };
+                recorder.start();
+                console.log("Stream started");
+            });
+
+            break;
+        case "captureStop":
+            if (!stream) {
+                console.log("Stream not started");
+                break;
+            }
+
+            console.log("Stopping stream");
+            stream.getVideoTracks()[0].stop();
+            recorder.stop();
+            console.log("Stream stopped");
+
+            break;
+        default:
+            throw new Error(`Action ${message.action} doesn't exist`);
     }
 });
