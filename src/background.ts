@@ -1,6 +1,3 @@
-/// <reference path="../node_modules/@types/chrome/index.d.ts"/>
-/// <reference path="../node_modules/@types/webrtc/index.d.ts"/>
-
 class Greeter {
     constructor(private greeting: string, private color: string = "red") {}
 
