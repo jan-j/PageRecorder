@@ -2,13 +2,15 @@
   "name": "page-recorder",
   "version": "0.1.0",
   "scripts": {
+    "install": "typings install",
     "build": "webpack --config=webpack.config.js",
-    "watch": "webpack-dev-server --config=webpack.config.js --hot --inline"
+    "start": "webpack-dev-server --config=webpack.config.js --hot --inline"
   },
   "dependencies": {
     "ts-loader": "^0.9.5",
     "tslint": "^3.15.1",
     "typescript": "^2.0.3",
+    "typings": "^1.5.0",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.16.2"
   }
