@@ -1,17 +1,14 @@
 <html>
 <head>
-    <style>
-        body {
-            width: 200px;
-        }
-    </style>
+    <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-<div>
-    <h1>Page Recorder</h1>
-    <button id="record">Record</button>
-    <button id="stop">Stop</button>
-    <button id="save">Save</button>
+<div class="container">
+    <button id="record" class="button button-record" title="Start recording"></button>
+    <button id="stop" class="button button-stop" title="Stop recording" style="display: none;"></button>
+    <div class="timer">
+        Start recording
+    </div>
 </div>
 <script src="https://localhost:3001/build/popup.js"></script>
 </body>
