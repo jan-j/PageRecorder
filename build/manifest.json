@@ -2,6 +2,7 @@
   "manifest_version": 2,
   "name": "PageRecorder",
   "version": "0.1.0",
+  "description": "PageRecorder allows you to capture video of tab content and your interaction with it",
   "background": {
     "page": "background.html"
   },
