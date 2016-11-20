@@ -25,10 +25,6 @@ let stream: MediaStream = null;
 let startTimestamp: number = null;
 let recorder = null;
 let chunks: Array<Blob> = null;
-let size: Size = {
-    width: 1920,
-    height: 1080
-};
 
 const helper = {
     state: function () {
@@ -38,7 +34,7 @@ const helper = {
             return "init";
         }
     },
-    record: function (): boolean {
+    record: function (size: Size): boolean {
         console.log("Starting stream");
         startTimestamp = Date.now();
         chrome.tabCapture.capture(captureOptions(size), function (s: MediaStream) {
@@ -106,7 +102,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
             break;
 
         case "record":
-            if (helper.record()) {
+            if (helper.record(message.size)) {
                 response.state = "recording";
                 response.startTimestamp = startTimestamp;
             }
@@ -144,11 +140,6 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
             }
 
             sendResponse(response);
-            break;
-
-        case "setResolution":
-            size = message.size;
-
             break;
 
         default:

@@ -1,3 +1,5 @@
+import Size from "./types/Size";
+
 const recordButton = document.getElementById("record");
 const stopButton = document.getElementById("stop");
 const timer = document.getElementById("timer");
@@ -59,8 +61,9 @@ chrome.runtime.sendMessage({action: "state"}, function (response) {
 });
 
 recordButton.addEventListener("click", function () {
-    chrome.tabs.executeScript(null, {file: "content_script.js"}, function () {
-        chrome.runtime.sendMessage({action: "record"}, function (response) {
+    chrome.tabs.executeScript(null, {file: "get_window_size.js"}, function (params) {
+        let size: Size = JSON.parse(params[0]);
+        chrome.runtime.sendMessage({action: "record", size: size}, function (response) {
             renderState(response.state, response);
         });
     });
