@@ -1,17 +1,22 @@
+import Size from "./types/Size";
+
 declare var MediaRecorder: any;
 
-const captureOptions = {
-    video: true,
-    audio: false,
-    videoConstraints: {
-        mandatory: {
-            minWidth: 1920,
-            minHeight: 1080,
-            maxWidth: 1920,
-            maxHeight: 1080
+const captureOptions = function (size: Size) {
+    return {
+        video: true,
+        audio: false,
+        videoConstraints: {
+            mandatory: {
+                minWidth: size.width,
+                minHeight: size.height,
+                maxWidth: size.width,
+                maxHeight: size.height
+            }
         }
-    }
+    };
 };
+
 const recorderOptions = {
     mimeType: "video/webm" // only webm is supported
 };
@@ -20,6 +25,10 @@ let stream: MediaStream = null;
 let startTimestamp: number = null;
 let recorder = null;
 let chunks: Array<Blob> = null;
+let size: Size = {
+    width: 1920,
+    height: 1080
+};
 
 const helper = {
     state: function () {
@@ -32,7 +41,7 @@ const helper = {
     record: function (): boolean {
         console.log("Starting stream");
         startTimestamp = Date.now();
-        chrome.tabCapture.capture(captureOptions, function (s: MediaStream) {
+        chrome.tabCapture.capture(captureOptions(size), function (s: MediaStream) {
             stream = s;
             chunks = [];
             recorder = new MediaRecorder(stream, recorderOptions);
@@ -142,6 +151,11 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
             }
 
             sendResponse(response);
+            break;
+
+        case "setResolution":
+            size = message.size;
+
             break;
 
         default:

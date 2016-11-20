@@ -25,9 +25,6 @@ const formatDuration = function (duration: number): string {
     return padZero(hours.toString()) + ":" + padZero(minutes.toString()) + ":" + padZero(seconds.toString());
 };
 
-window["a"] = formatDuration;
-window["b"] = padZero;
-
 let timerIntervalHandler: number = null;
 
 const startTimer = function (startTimestamp: number): void {
@@ -63,8 +60,10 @@ chrome.runtime.sendMessage({action: "state"}, function (response) {
 });
 
 recordButton.addEventListener("click", function () {
-    chrome.runtime.sendMessage({action: "record"}, function (response) {
-        renderState(response.state, response);
+    chrome.tabs.executeScript(null, {file: "content_script.js"}, function () {
+        chrome.runtime.sendMessage({action: "record"}, function (response) {
+            renderState(response.state, response);
+        });
     });
 });
 

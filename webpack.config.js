@@ -1,7 +1,8 @@
 module.exports = {
     entry: {
         popup: './src/popup.ts',
-        background: './src/background.ts'
+        background: './src/background.ts',
+        content_script: './src/content_script.ts'
     },
     output: {
         filename: './build/[name].js',
