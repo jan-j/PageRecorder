@@ -17,6 +17,7 @@ const recorderOptions = {
 };
 
 let stream: MediaStream = null;
+let startTimestamp: number = null;
 let recorder = null;
 let chunks: Array<Blob> = null;
 
@@ -30,6 +31,7 @@ const helper = {
     },
     record: function (): boolean {
         console.log("Starting stream");
+        startTimestamp = Date.now();
         chrome.tabCapture.capture(captureOptions, function (s: MediaStream) {
             stream = s;
             chunks = [];
@@ -52,6 +54,10 @@ const helper = {
         console.log("Stopping stream");
         stream.getVideoTracks()[0].stop();
         recorder.stop();
+
+        recorder = null;
+        stream = null;
+        startTimestamp = null;
         console.log("Stream stopped");
 
         return true;
@@ -80,7 +86,8 @@ const helper = {
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     let response = {
-        state: "init"
+        state: "init",
+        startTimestamp: null
     };
 
     switch (message.action) {
@@ -91,12 +98,17 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
         case "state":
             response.state = helper.state();
 
+            if (response.state === "recording") {
+                response.startTimestamp = startTimestamp;
+            }
+
             sendResponse(response);
             break;
 
         case "record":
             if (helper.record()) {
                 response.state = "recording";
+                response.startTimestamp = startTimestamp;
             }
 
             sendResponse(response);
@@ -112,7 +124,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
         case "save":
             if (helper.stop()) {
-                response.state = "saved";
+                response.state = "init";
             }
 
             sendResponse(response);
