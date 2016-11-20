@@ -71,7 +71,7 @@ const helper = {
 
         return true;
     },
-    save: function (): boolean {
+    save: function (): boolean|string {
         if (chunks.length === 0) {
             console.log("No data saved yet");
             return false;
@@ -79,24 +79,15 @@ const helper = {
 
         let blob = new Blob(chunks, {type: chunks[0].type});
 
-        chrome.downloads.download({
-                url: URL.createObjectURL(blob),
-                filename: "video.webm",
-                saveAs: true
-            },
-            function (downloadId) {
-                console.log(`Download with id = ${downloadId} started`);
-            }
-        );
-
-        return true;
+        return URL.createObjectURL(blob);
     }
 };
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     let response = {
         state: "init",
-        startTimestamp: null
+        startTimestamp: null,
+        videoData: null
     };
 
     switch (message.action) {
@@ -143,8 +134,10 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
             if (helper.stop()) {
                 response.state = "stopped";
 
-                if (helper.save()) {
+                let videoData = helper.save();
+                if (videoData) {
                     response.state = "init";
+                    response.videoData = videoData;
 
                     sendResponse(response);
                 }

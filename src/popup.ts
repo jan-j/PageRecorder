@@ -36,7 +36,6 @@ const startTimer = function (startTimestamp: number): void {
 };
 
 const stopTimer = function (): void {
-    startTimestamp = null;
     clearInterval(timerIntervalHandler);
     timer.innerHTML = "Start recording";
 };
@@ -70,5 +69,15 @@ recordButton.addEventListener("click", function () {
 stopButton.addEventListener("click", function () {
     chrome.runtime.sendMessage({action: "stopAndSave"}, function (response) {
         renderState(response.state, response);
+
+        if (response.videoData) {
+            let a = document.createElement("a");
+            a.href = response.videoData;
+            a.download = "video.webm";
+            a.style.display = "none";
+            document.body.appendChild(a);
+            a.click();
+            a.href = "";
+        }
     });
 });
