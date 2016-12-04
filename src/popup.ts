@@ -61,8 +61,9 @@ chrome.runtime.sendMessage({action: "state"}, function (response) {
 });
 
 recordButton.addEventListener("click", function () {
-    chrome.tabs.executeScript(null, {file: "get_window_size.js"}, function (params) {
-        let size: Size = JSON.parse(params[0]);
+    const getWindowSizeCode = "var size = {width: window.innerWidth, height: window.innerHeight}; size;";
+    chrome.tabs.executeScript(null, {code: getWindowSizeCode}, function (result) {
+        let size: Size = result[0];
         chrome.runtime.sendMessage({action: "record", size: size}, function (response) {
             renderState(response.state, response);
         });
