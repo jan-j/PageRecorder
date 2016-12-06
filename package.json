@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "scripts": {
     "install": "typings install",
-    "build": "NODE_ENV=production webpack --config=webpack.config.js",
+    "build": "webpack --config=webpack.config.production.js",
+    "start": "webpack-dev-server --config=webpack.config.development.js --hot --inline",
     "pack": "cd dist/production && zip -r ../PageRecorder.zip * && cd ../..",
-    "start": "NODE_ENV=development webpack-dev-server --config=webpack.config.js --hot --inline"
+    "clean": "rm -rf dist/production/* dist/development/*"
   },
   "dependencies": {
     "copy-webpack-plugin": "^4.0.1",

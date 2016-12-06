@@ -5,5 +5,5 @@
 /src/**/*.js.map
 .gitignore
 
-!/src/manifest.js
+!/src/createManifest.js
 .DS_Store
