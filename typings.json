@@ -1,6 +1,10 @@
 {
   "name": "page-recorder",
-  "dependencies": {},
+  "dependencies": {
+    "react": "registry:npm/react#15.0.1+20160601175240",
+    "react-dom": "registry:npm/react-dom#15.0.1+20160826174104",
+    "react-redux": "registry:npm/react-redux#4.4.0+20160614222153"
+  },
   "globalDependencies": {
     "chrome": "registry:dt/chrome#0.0.0+20160724063844",
     "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",

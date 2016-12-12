@@ -13,7 +13,7 @@ const createWebpackConfig = function (env) {
 
     const config = {
         entry: {
-            popup: path.join(srcDir, 'popup.ts'),
+            popup: path.join(srcDir, 'popup.tsx'),
             background: path.join(srcDir, 'background.ts')
         },
         output: {

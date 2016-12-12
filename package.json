@@ -3,15 +3,21 @@
   "version": "0.1.0",
   "scripts": {
     "install": "typings install",
-    "build": "webpack --config=webpack.config.production.js",
-    "start": "webpack-dev-server --config=webpack.config.development.js --hot --inline",
+    "start": "yarn run clean-development && yarn run webpack-dev-server -- --config=webpack.config.development.js --hot --inline",
+    "build": "yarn run clean-production && yarn run webpack -- --config=webpack.config.production.js",
     "pack": "cd dist/production && zip -r ../PageRecorder.zip * && cd ../..",
-    "clean": "rm -rf dist/production/* dist/development/*"
+    "clean": "yarn run clean-development && yarn run clean-production",
+    "clean-development": "rm -rf dist/development/*",
+    "clean-production": "rm -rf dist/production/*"
   },
   "dependencies": {
     "copy-webpack-plugin": "^4.0.1",
     "generate-json-webpack-plugin": "^0.2.1",
     "html-webpack-plugin": "^2.24.1",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "react-redux": "^4.4.6",
+    "redux": "^3.6.0",
     "ts-loader": "^0.9.5",
     "tslint": "^3.15.1",
     "typescript": "^2.0.3",
