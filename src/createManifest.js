@@ -1,13 +1,7 @@
 const createManifest = function (env) {
-    let name = 'PageRecorder';
-
-    if (env !== 'production') {
-        name += 'Dev';
-    }
-
-    return {
+    const manifest = {
         manifest_version: 2,
-        name: name,
+        name: 'PageRecorder',
         version: '0.1.0',
         description: 'PageRecorder allows you to capture video of tab content and your interaction with it',
         background: {
@@ -26,6 +20,14 @@ const createManifest = function (env) {
             128: 'assets/images/icon128.png'
         }
     };
+
+    if (env !== 'production') {
+        manifest.name += 'Dev';
+
+        manifest.content_security_policy = "script-src 'self' 'unsafe-eval' https://localhost:3001; object-src 'self';";
+    }
+
+    return manifest;
 };
 
 module.exports = createManifest;
